@@ -27,7 +27,7 @@ public class SessionService {
     TokenRepository tokenRepository;
 
     public Map<String, Object> login(LoginRequest loginRequest){
-        User user = this.userRepository.findByUser(loginRequest.user());
+        User user = this.userRepository.findByUsername(loginRequest.user());
         if (user == null){
             return Response.getResponse(1001, "", "");
         }

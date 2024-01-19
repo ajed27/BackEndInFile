@@ -24,6 +24,7 @@ public class SessionToken {
     private Boolean state;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_user")
     private User user;
 
     public SessionToken(String token, User user){

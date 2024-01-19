@@ -29,6 +29,7 @@ public class New {
     private Boolean state;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_category")
     private CategoryNew category;
 
 }

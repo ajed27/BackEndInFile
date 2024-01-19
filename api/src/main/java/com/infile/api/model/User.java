@@ -9,7 +9,7 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Table(name = "user")
+@Table(name = "client")
 @Entity
 @Setter
 @Getter
@@ -24,7 +24,8 @@ public class User {
 
     private String email;
 
-    private String user;
+    @Column(name = "username")
+    private String username;
 
     private String password;
 
@@ -35,7 +36,7 @@ public class User {
 
     public User(RegisterRequest registerRequest){
         this.email = registerRequest.email();
-        this.user = registerRequest.user();
+        this.username = registerRequest.user();
         this.password = registerRequest.password();
     }
 
