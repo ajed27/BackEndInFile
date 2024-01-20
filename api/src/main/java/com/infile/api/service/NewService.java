@@ -6,6 +6,7 @@ import com.infile.api.repository.NewRepository;
 import com.infile.api.structure.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,24 @@ public class NewService {
         for (New news : newList){
             NewResponse newResponse = new NewResponse(news);
             newResponses.add(newResponse);
+        }
+        return Response.getResponse(1000, newResponses, "");
+    }
+
+    public Map<String, Object> getThree(){
+        List<New> newList = this.newRepository.findNewsByState(true);
+        if (newList.isEmpty()){
+            return Response.getResponse(5000, "", "");
+        }
+        List<NewResponse> newResponses = new ArrayList<>();
+        int i = 1;
+        for (New news : newList){
+            NewResponse newResponse = new NewResponse(news);
+            newResponses.add(newResponse);
+            i++;
+            if(i == 4){
+                break;
+            }
         }
         return Response.getResponse(1000, newResponses, "");
     }

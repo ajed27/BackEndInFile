@@ -16,11 +16,6 @@ public class SessionController {
     @Autowired
     SessionService sessionService;
 
-    @GetMapping("/login")
-    String api(){
-        return "Hola soy la nueva api";
-    }
-
     @PostMapping("/login")
     Map<String, Object> login(@RequestBody @Valid LoginRequest loginRequest){
         return this.sessionService.login(loginRequest);

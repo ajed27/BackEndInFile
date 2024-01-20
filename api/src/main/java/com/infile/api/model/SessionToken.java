@@ -25,11 +25,11 @@ public class SessionToken {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user")
-    private User user;
+    private User username;
 
-    public SessionToken(String token, User user){
+    public SessionToken(String token, User username){
         this.token = token;
-        this.user = user;
+        this.username = username;
     }
 
 }

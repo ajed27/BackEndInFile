@@ -31,7 +31,7 @@ public class User {
 
     private Boolean state;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "username", fetch = FetchType.LAZY)
     private List<SessionToken> sessionTokens;
 
     public User(RegisterRequest registerRequest){

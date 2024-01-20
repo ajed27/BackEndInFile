@@ -10,6 +10,7 @@ import com.infile.api.repository.UserRepository;
 import com.infile.api.structure.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -26,6 +27,7 @@ public class SessionService {
     @Autowired
     TokenRepository tokenRepository;
 
+    @Transactional
     public Map<String, Object> login(LoginRequest loginRequest){
         User user = this.userRepository.findByUsername(loginRequest.user());
         if (user == null){
@@ -42,12 +44,14 @@ public class SessionService {
         return Response.getResponse(1000, new LoginResponse(sessionToken), "");
     }
 
+
     private SessionToken createToken(User user){
         SecureRandom random = new SecureRandom();
         String token = new BigInteger(130, random).toString(32).substring(0, 10);
         return new SessionToken(token, user);
     }
 
+    @Transactional
     public Map<String, Object> createUser(RegisterRequest registerRequest){
         User user = new User(registerRequest);
         this.userRepository.save(user);
@@ -56,11 +60,12 @@ public class SessionService {
         return Response.getResponse(1000, new LoginResponse(sessionToken), "");
     }
 
+    @Transactional
     public boolean tokenSecure(Long idUser, String token){
         SessionToken sessionToken = this.tokenRepository.findByToken(token);
         if (sessionToken == null){
             return false;
         }
-        return Objects.equals(sessionToken.getUser().getIdUser(), idUser);
+        return Objects.equals(sessionToken.getUsername().getIdUser(), idUser);
     }
 }

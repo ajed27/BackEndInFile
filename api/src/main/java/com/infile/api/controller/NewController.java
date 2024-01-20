@@ -21,6 +21,11 @@ public class NewController {
         return this.newService.getAll();
     }
 
+    @GetMapping("recommend")
+    public Map<String, Object> getThree(){
+        return this.newService.getThree();
+    }
+
     @GetMapping("/{id}")
     public Map<String, Object> getById(@PathVariable(value = "id") Long idNew){
         return this.newService.get(idNew);

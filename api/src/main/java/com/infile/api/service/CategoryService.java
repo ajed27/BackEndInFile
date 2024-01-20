@@ -6,6 +6,7 @@ import com.infile.api.repository.CategoryRepository;
 import com.infile.api.structure.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ public class CategoryService {
     @Autowired
     CategoryRepository categoryRepository;
 
+    @Transactional
     public Map<String, Object> getAll(){
 
         List<CategoryNew> categoryNews = this.categoryRepository.findCategoryNewByState(true);
