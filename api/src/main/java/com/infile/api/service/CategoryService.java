@@ -3,14 +3,14 @@ package com.infile.api.service;
 import com.infile.api.data.category.CategoryResponse;
 import com.infile.api.model.CategoryNew;
 import com.infile.api.repository.CategoryRepository;
-import com.infile.api.structure.Response;
+import com.infile.api.structure.response.ResponseCode;
+import com.infile.api.structure.response.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class CategoryService {
@@ -19,18 +19,18 @@ public class CategoryService {
     CategoryRepository categoryRepository;
 
     @Transactional
-    public Map<String, Object> getAll(){
+    public ResponseMessage getAll(){
 
         List<CategoryNew> categoryNews = this.categoryRepository.findCategoryNewByState(true);
         if (categoryNews.isEmpty()){
-            return Response.getResponse(5000, "", "");
+            return new ResponseMessage(ResponseCode.DATA_NOT_FOUND,  "");
         }
         List<CategoryResponse> categoryResponses = new ArrayList<>();
         for (CategoryNew categoryNew : categoryNews){
             CategoryResponse categoryResponse = new CategoryResponse(categoryNew);
             categoryResponses.add(categoryResponse);
         }
-        return Response.getResponse(1000, categoryResponses, "");
+        return new ResponseMessage(ResponseCode.SUCCESS, categoryResponses);
     }
 
 }

@@ -7,14 +7,14 @@ import com.infile.api.model.SessionToken;
 import com.infile.api.model.User;
 import com.infile.api.repository.TokenRepository;
 import com.infile.api.repository.UserRepository;
-import com.infile.api.structure.Response;
+import com.infile.api.structure.response.ResponseCode;
+import com.infile.api.structure.response.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.util.Map;
 import java.util.Objects;
 
 @Service
@@ -28,20 +28,20 @@ public class SessionService {
     TokenRepository tokenRepository;
 
     @Transactional
-    public Map<String, Object> login(LoginRequest loginRequest){
+    public ResponseMessage login(LoginRequest loginRequest){
         User user = this.userRepository.findByUsername(loginRequest.user());
         if (user == null){
-            return Response.getResponse(1001, "", "");
+            return new ResponseMessage(ResponseCode.USER_DOESNT_EXIST, "");
         }
         if (!user.getState()){
-            return Response.getResponse(1002, "", "");
+            return new ResponseMessage(ResponseCode.USER_DELETED, "");
         }
         if (!user.getPassword().equals(loginRequest.password())){
-            return Response.getResponse(1003, "", "");
+            return new ResponseMessage(ResponseCode.PASSWORD_INCORRECT, "");
         }
         SessionToken sessionToken = this.createToken(user);
         this.tokenRepository.save(sessionToken);
-        return Response.getResponse(1000, new LoginResponse(sessionToken), "");
+        return new ResponseMessage(ResponseCode.SUCCESS, new LoginResponse(sessionToken));
     }
 
 
@@ -52,12 +52,12 @@ public class SessionService {
     }
 
     @Transactional
-    public Map<String, Object> createUser(RegisterRequest registerRequest){
+    public ResponseMessage createUser(RegisterRequest registerRequest){
         User user = new User(registerRequest);
         this.userRepository.save(user);
         SessionToken sessionToken = this.createToken(user);
         this.tokenRepository.save(sessionToken);
-        return Response.getResponse(1000, new LoginResponse(sessionToken), "");
+        return new ResponseMessage(ResponseCode.SUCCESS, new LoginResponse(sessionToken));
     }
 
     @Transactional

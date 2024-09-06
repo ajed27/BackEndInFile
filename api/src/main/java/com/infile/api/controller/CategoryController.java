@@ -1,6 +1,7 @@
 package com.infile.api.controller;
 
 import com.infile.api.service.CategoryService;
+import com.infile.api.structure.response.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +15,7 @@ public class CategoryController {
     CategoryService categoryService;
 
     @GetMapping
-    public Map<String, Object> getAll(){
+    public ResponseMessage getAll(){
         return this.categoryService.getAll();
     }
 }

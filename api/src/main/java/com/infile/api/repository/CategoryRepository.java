@@ -8,4 +8,6 @@ import java.util.List;
 public interface CategoryRepository extends JpaRepository<CategoryNew, Long> {
 
     List<CategoryNew> findCategoryNewByState(Boolean state);
+
+    CategoryNew findByIdCategory(Long idCategory);
 }
